@@ -1,3 +1,192 @@
-```javascript
-<div class="test"></div>
+# Accessible Forms
+
+- a form is an element that allows users to provide data
+- can be as simple as a single field or as complicated as a multi-step form element with multiple fields, input validations or even CAPTCHA
+- one of the most difficult elements to get right from an accessibility perspective, due to usage of many different elements with their respective rules plus form specific accessibility requirements
+
+## Why do we need accessible forms
+
+
+
+## Use native HTML
+
+- whenever possible
+- most of the native HTML form controls are accessible by default
+
+ARIA vs. HTML
+
+<div className="forms__comparison">
+  <div className="forms__comparison--aria">
+    ```html
+        <div role="form" id="sundae-order-form">
+           <!-- form content -->
+        </div>
+    ```
+  </div>
+   <div className="forms__comparison--html">
+    ```html
+        <form id="sundae-order-form">
+          <!-- form content -->
+        </form>
+    ```
+  </div>
+</div>
+
+## `<label>`
+
+- `<label>` defines label for several elements, like `<input>`, `<select>` and `<textarea>`
+- screenreaders will read out loud the label when element is focused
+
+```html
+<label>
+  First Name
+  <input type="text" />
+</label>
 ```
+```html
+<label for="txtFirstName">First Name</label>
+<input type="text" id="txtFirstName" />
+```
+
+### aria-labeledby
+
+
+## `<select>`
+
+<form id="best-company">
+  <fieldset>
+  <legend>Company Survey</legend>
+    <label htmlFor="bestCompany">What company is the best?</label>
+    <select name="bestCompany" id="bestCompany">
+      <option value="dotSource GmbH">dotSource GmbH</option>
+      <option value="dotSource SE">dotSource SE</option>
+      <option value="dS">dS</option>
+      <option value="all of the above">all of the above</option>
+    </select>
+  </fieldset>
+</form>
+
+```html
+<form id="best-company">
+  <fieldset>
+  <legend>Company Survey</legend>
+    <label htmlFor="bestCompany">What company is the best?</label>
+    <select name="bestCompany" id="bestCompany">
+      <option value="dotSource GmbH">dotSource GmbH</option>
+      <option value="dotSource SE">dotSource SE</option>
+      <option value="dS">dS</option>
+      <option value="all of the above">all of the above</option>
+    </select>
+  </fieldset>
+</form>
+```
+## `<dialog>`
+
+- native HTML element serves e.g. as a modal, dismissible alert or subwindow
+- needs `autofocus` attribute because user is expected to interact with it immediately
+- if no other element (like an input field) is implemented, `autofocus` should be on the close button or dialog itself
+
+<dialog>
+  <button autoFocus>Close</button>
+  <p>This modal dialog has a groovy backdrop!</p>
+</dialog>
+<button>Show the dialog</button>
+
+```html
+<dialog>
+  <button autoFocus>Close</button>
+  <p>This modal dialog has a groovy backdrop!</p>
+</dialog>
+<button>Show the dialog</button>
+```
+
+**Attention!** Do not add tabindex property to `<dialog>` since the dialog and corresponding close button can already receive focus and be interactive
+
+## Complete form example
+
+<form id="sundae-order-form">
+  <h2>Online Sundae Order Form</h2>
+  <fieldset>
+    <legend>Customer Info</legend>
+    <p><label>Name: <input type="name" required aria-required="true"/></label></p>
+    <p><label>Telephone: <input type="tel"/></label></p>
+    <p><label>Email address: <input type="email"/></label></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Size</legend>
+    <p><label><input type="radio" name="size" value="small"/>Small</label></p>
+    <p><label><input type="radio" name="size" value="medium"/>Medium</label></p>
+    <p><label><input type="radio" name="size" value="large"/>Large</label></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Toppings</legend>
+    <p><label><input type="checkbox" name="topping" value="whipped-cream"/>Whipped cream</label></p>
+    <p><label><input type="checkbox" name="topping" value="cherry"/>Cherry</label></p>
+    <p><label><input type="checkbox" name="topping" value="nuts"/>Nuts</label></p>
+    <p><label><input type="checkbox" name="topping" value="caramel-sauce"/>Caramel sauce</label></p>
+    <p><label><input type="checkbox" name="topping" value="chocolate-sauce"/>Chocolate sauce</label></p>
+  </fieldset>
+  <p><label>Delivery instructions: </label><br></br><textarea name="comments"></textarea></p>
+  <p><button>Submit order</button></p>
+</form>
+
+```html
+<form id="sundae-order-form">
+  <h2>Online Sundae Order Form</h2>
+  <fieldset>
+    <legend>Customer Info</legend>
+    <p><label>Name: <input type="name" required aria-required="true" /></label></p>
+    <p><label>Telephone: <input type="tel"/></label></p>
+    <p><label>Email address: <input type="email"/></label></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Size</legend>
+    <p><label><input type="radio" name="size" value="small"/>Small</label></p>
+    <p><label><input type="radio" name="size" value="medium"/>Medium</label></p>
+    <p><label><input type="radio" name="size" value="large"/>Large</label></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Toppings</legend>
+    <p><label><input type="checkbox" name="topping" value="whipped-cream"/>Whipped cream</label></p>
+    <p><label><input type="checkbox" name="topping" value="cherry"/>Cherry</label></p>
+    <p><label><input type="checkbox" name="topping" value="nuts"/>Nuts</label></p>
+    <p><label><input type="checkbox" name="topping" value="caramel-sauce"/>Caramel sauce</label></p>
+    <p><label><input type="checkbox" name="topping" value="chocolate-sauce"/>Chocolate sauce</label></p>
+  </fieldset>
+  <p><label>Delivery instructions: </label><br><textarea name="comments"></textarea></p>
+  <p><button>Submit order</button></p>
+</form>
+```
+
+## How to handle errors
+
+## Custom form elements
+
+- what if the native HTML elements aren't enough?
+- use ARIA roles to simulate native HTML
+<span data-href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles" tabindex="0" role="link">
+  Fake accessible link to a complete ARIA roles list created using a span
+</span>
+
+```html
+<span data-href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles" tabindex="0" role="link">
+  Fake accessible link to a complete ARIA roles list created using a span
+</span>
+```
+
+
+## Irritating screen reader behaviours
+
+- in general they handle forms pretty uniformly
+- some behaviours occur that may be surprising, if not confusing and some are simply buggy
+- this is mainly referred to NVDA but JAWS also has some issues
+
+## Possible topics for future Techtalks
+
+
+
+
