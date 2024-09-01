@@ -1,3 +1,5 @@
+
+
 .forms {
   &__comparison {
     display: flex;
@@ -5,6 +7,16 @@
         
     &--aria, &--html {
       flex-basis: 50%;
+    }
+  }
+
+  &__button {
+    width: fit-content;
+    padding: .5rem 1rem;
+    background-color: #2d50af;
+
+    &[aria-disabled="true"] {
+      background-color: #c33838;
     }
   }
 }

@@ -10,6 +10,7 @@
 
 - whenever possible
 - most of the native HTML form controls are accessible by default
+- easier to maintain / to understand
 
 ARIA vs. HTML
 
@@ -29,6 +30,64 @@ ARIA vs. HTML
     ```
   </div>
 </div>
+
+## Forms structure
+
+- the following question for extra bacon LOOKS exactly the same as the one with the cheese
+- but navigating with the keyboard and a SR: it would only read the answers with no relation to the question
+
+<form>
+  <p>Would you like some extra bacon?</p>
+
+   <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
+   <label for="yesBacon">Yes, please!</label>
+   <br></br>
+   <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
+   <label for="noBacon">No, thanks!</label>
+</form>
+
+```html
+<form>
+  <p>Would you like some extra bacon?</p>
+
+   <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
+   <label for="yesBacon">Yes, please!</label>
+   <br></br>
+   <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
+   <label for="noBacon">No, thanks!</label>
+</form>
+```
+
+- that is why:
+- a `<form>` should contain one or multiple `<fieldset>` elements, which group several controls as well as label
+- within the fieldset is the `<legend>` element to provide a caption
+- this structure forms a relation between question and answer
+
+<form action="#">
+  <fieldset>
+  <legend>Would you like some extra cheese?</legend>
+    <input type="radio" id="yesCheese" name="cheese" value="yesCheese" />
+    <label for="yesCheese">Yes, please!</label>
+    <br></br>
+    <input type="radio" id="noCheese" name="cheese" value="noCheese" />
+    <label for="noCheese">No, thanks!</label>
+  </fieldset>
+</form>
+
+```html
+<form action="#">
+  <fieldset>
+  <legend>Would you like some extra cheese?</legend>
+    <input type="radio" id="yesCheese" name="agree" />
+    <label for="yesCheese">Yes, please!</label>
+    <br></br>
+    <input type="radio" id="noCheese" name="disagree" />
+    <label for="noCheese">No, thanks!</label>
+  </fieldset>
+</form>
+```
+
+**Attention:** don't forget the `<form>` element, especially when using `onclick` events or similar. Whenever form controls need to be submittable, they should be placed within a `<form>` tag.
 
 ## `<label>`
 
@@ -85,20 +144,83 @@ ARIA vs. HTML
 - if no other element (like an input field) is implemented, `autofocus` should be on the close button or dialog itself
 
 <dialog>
-  <button autoFocus>Close</button>
+  <button class="forms__button" autoFocus>Close</button>
   <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
-<button>Show the dialog</button>
+<button class="forms__button">Show the dialog</button>
 
 ```html
 <dialog>
-  <button autoFocus>Close</button>
+  <button class="forms__button" autoFocus>Close</button>
   <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
-<button>Show the dialog</button>
+<button class="forms__button">Show the dialog</button>
 ```
 
 **Attention!** Do not add tabindex property to `<dialog>` since the dialog and corresponding close button can already receive focus and be interactive
+
+## Irritating screen reader behaviours
+
+- in general they handle forms pretty uniformly
+- some behaviours occur that may be surprising, if not confusing and some are simply buggy
+- this is mainly referred to NVDA but JAWS also has some issues
+
+### Announcing of controls' attributes
+
+- HTML offers many attribues to customize behaviour of form controls
+
+```html
+<input type="text" />
+<input type="checkbox" />
+```
+- NVDA announces the "edit" (for text) of "checkbox" so the user knows how to deal with the input field
+
+#### Some attributes are non-intuitive
+
+- plain text inputs are announced as "has autocomplete" by NVDA
+- because HTML offers and autocomplete attribute for single line input; and its default is set to true
+- basically shows previously typed inputs by the user
+- this may be counter-intuitive because of known autosuggest feature like google has it
+
+Test: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_autocomplete2
+
+Solution: `autocomplete="off"` or explain what the feature does with `aria-describedby`
+
+#### Missing announcements
+
+- some attributes seem to not be announced at all like `maxlength` option on `<input type="text"/>`
+- not even when the user's input reaches the maximum input length
+- not announced by NVDA; since July 2024 available with JAWS
+
+- `multiple` option of `<select>` element is not announced by NVDA; JAWS announces it as "multi select"
+
+Solution: Display information inside the label for example "Full name (max. 20 character)"
+
+### Checkboxes don't trigger focus mode
+
+- focus mode is used when the user enters a form or other fields that require user input
+- so keystrokes aren't intercepted / used for commands but to send input
+- Checkboxes don't activate focus mode when navigating with the `Tab` key
+- resulting in not announcing change of context when switching between `<fieldset>`'s (different topics in a form)
+- because NVDA only announces the `<legend>` of a `<fieldset>` while in focus mode
+
+Test: https://www.nvaccess.org/files/nvdaTracAttachments/3321/nvda_fieldset_announcement.html
+
+### Disabled Buttons
+
+- buttons are disabled for indicating, that input is invalid or incompplete
+- `disable` a button is valid standard technique but confusing for screenreaders since the button is not focusable
+- SR users will not recognise the end of the form
+
+Solution: use `aria-disabled="true"` to allow the button to receive focus and announcing its disabled state
+
+```html
+<button class="forms__button" type="submit" aria-disabled="true">Disabled</button>
+```
+
+<button class="forms__button" type="submit" aria-disabled="true">Disabled</button>
+
+## How to handle errors
 
 ## Complete form example
 
@@ -160,8 +282,6 @@ ARIA vs. HTML
 </form>
 ```
 
-## How to handle errors
-
 ## Custom form elements
 
 - what if the native HTML elements aren't enough?
@@ -176,15 +296,14 @@ ARIA vs. HTML
 </span>
 ```
 
-
-## Irritating screen reader behaviours
-
-- in general they handle forms pretty uniformly
-- some behaviours occur that may be surprising, if not confusing and some are simply buggy
-- this is mainly referred to NVDA but JAWS also has some issues
-
 ## Possible topics for future Techtalks
 
+- custom form elements
 
+## Sources
 
-
+https://www.accessibility-developer-guide.com
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+https://www.smashingmagazine.com/2023/02/guide-accessible-form-validation/
+https://www.w3schools.com/accessibility/accessibility_forms_intro.php
+https://web.dev/learn/accessibility/forms
