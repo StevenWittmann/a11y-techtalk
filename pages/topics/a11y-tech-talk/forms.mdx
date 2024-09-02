@@ -38,6 +38,7 @@ ARIA vs. HTML
 - the following question for extra bacon LOOKS exactly the same as the one with the cheese
 - but navigating with the keyboard and a SR: it would only read the answers with no relation to the question
 
+<br></br>
 <form>
   <p>Would you like some extra bacon?</p>
 
@@ -53,10 +54,10 @@ ARIA vs. HTML
   <p>Would you like some extra bacon?</p>
 
    <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
-   <label htmlFor="yesBacon">Yes, please!</label>
+   <label for="yesBacon">Yes, please!</label>
    <br></br>
-   <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
-   <label htmlFor="noBacon">No, thanks!</label>
+   <input type="radio" id="noBacon" name="bacon" value="noBacon" />
+   <label for="noBacon">No, thanks!</label>
 </form>
 ```
 
@@ -65,6 +66,7 @@ ARIA vs. HTML
 - within the fieldset is the `<legend>` element to provide a caption
 - this structure forms a relation between question and answer
 
+<br></br>
 <form action="#">
   <fieldset>
   <legend>Would you like some extra cheese?</legend>
@@ -81,10 +83,10 @@ ARIA vs. HTML
   <fieldset>
   <legend>Would you like some extra cheese?</legend>
     <input type="radio" id="yesCheese" name="agree" />
-    <label htmlFor="yesCheese">Yes, please!</label>
+    <label for="yesCheese">Yes, please!</label>
     <br></br>
     <input type="radio" id="noCheese" name="disagree" />
-    <label htmlFor="noCheese">No, thanks!</label>
+    <label for="noCheese">No, thanks!</label>
   </fieldset>
 </form>
 ```
@@ -110,6 +112,14 @@ Good:
 <label htmlFor="txtFirstName">Last Name</label>
 <input type="text" id="txtFirstName" />
 
+- for each input field there should be a label using the `for` attribute
+
+```html
+<label for="txtFirstName">First Name</label>
+<input type="text" id="txtFirstName" />
+```
+
+- there is also the possibility to use the `label` element around the input without the need for the `for` attribute
 
 ```html
 <label>
@@ -117,14 +127,50 @@ Good:
   <input type="text" />
 </label>
 ```
-```html
-<label htmlFor="txtFirstName">First Name</label>
-<input type="text" id="txtFirstName" />
-```
 
-### aria labels
+- but if there are non-interactive elements, they can easily be missed (like a paragraph e.g. terms and conditions)
+- they need to be attached to the form controls specifically
+- SR interact with form controls using focus mode, meaning they navigate back and forth between focusable elements using the `Tab` key
 
-- use only for custom form elements
+### `aria-describedby`
+- to make those non-interactive elements visible to SR you can use `aria-describedby`
+- this attribute is useful to provide supplemental information about an control element, e.g. a date format, max length of an input field, password requirements
+- good for users skimming through a form, so they only get the information when they actually navigate to the field
+
+<br></br>
+<form>
+<div className="terms-forms">
+  <label for="terms-accept">I accept the following terms and conditions:</label>
+  <input aria-describedby="terms-and-conditions" id="terms-accept" type="checkbox" />
+    <ul id="terms-and-conditions">
+      <li>
+        I entered all data truthfully
+      </li>
+      <li>
+        I accept the terms and conditions
+      </li>
+      <li>
+       Of course, I would like to receive a Newsletter!
+      </li>
+    </ul>
+  </div>
+</form>
+
+**Attention:** Some SR will read the description but only with a long pause. This could lead to users accidentally skipping the description and never hearing it.
+
+### `tabindex="0"`
+
+- it may seem like a good idea to prevent non-focusable content (heading, important paragraph or list) from being skipped by making it focusable
+- tabindex="0" for giving an element focus and tabindex="-1" to revoke it
+- but only elements that provide some interaction (button, links, checkboxes..) should be focusable
+- users may be confused why a text is focused and expect some sort of interaction with it
+- this also is counterproductive, since you would've already finished interacting with the control element (the "agree" checkbox in this example) and would receive the information later than necessary
+
+## `aria-label`
+
+- use mostly for custom form elements
+- they are well-supported for interactive elements but not well-supported for statix text elements
+- if you're reaching to aria-label often, it may be a sign to reconsider the semantic markup
 
 
 ## `<select>`
@@ -146,7 +192,7 @@ Good:
 <form id="best-company">
   <fieldset>
   <legend>Company Survey</legend>
-    <label htmlFor="bestCompany">What company is the best?</label>
+    <label for="bestCompany">What company is the best?</label>
     <select name="bestCompany" id="bestCompany">
       <option value="dotSource GmbH">dotSource GmbH</option>
       <option value="dotSource SE">dotSource SE</option>
@@ -156,6 +202,7 @@ Good:
   </fieldset>
 </form>
 ```
+
 ## `<dialog>`
 
 - native HTML element serves e.g. as a modal, dismissible alert or subwindow
@@ -170,10 +217,10 @@ Good:
 
 ```html
 <dialog>
-  <button className="forms__button" autoFocus>Close</button>
+  <button class="forms__button" autoFocus>Close</button>
   <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
-<button className="forms__button">Show the dialog</button>
+<button class="forms__button">Show the dialog</button>
 ```
 
 **Attention!** Do not add tabindex property to `<dialog>` since the dialog and corresponding close button can already receive focus and be interactive
@@ -215,31 +262,40 @@ Solution: `autocomplete="off"` or explain what the feature does with `aria-descr
 
 Solution: Display information inside the label for example "Full name (max. 20 character)"
 
-### Checkboxes don't trigger focus mode
-
-- focus mode is used when the user enters a form or other fields that require user input
-- so keystrokes aren't intercepted / used for commands but to send input
-- Checkboxes don't activate focus mode when navigating with the `Tab` key
-- resulting in not announcing change of context when switching between `<fieldset>`'s (different topics in a form)
-- because NVDA only announces the `<legend>` of a `<fieldset>` while in focus mode
-
-Test: https://www.nvaccess.org/files/nvdaTracAttachments/3321/nvda_fieldset_announcement.html
-
 ### Disabled Buttons
 
 - buttons are disabled for indicating, that input is invalid or incomplete
 - `disable` a button is valid standard technique but confusing for screenreaders since the button is not focusable
 - SR users will not recognise the end of the form
 
+```html
+<button className="forms__button" type="submit" disabled>Disabled</button>
+```
+
+<button className="forms__button" type="submit" disabled>Disabled</button>
+
 Solution: use `aria-disabled="true"` to allow the button to receive focus and announcing its disabled state
 
 ```html
-<button className="forms__button" type="submit" aria-disabled="true">Disabled</button>
+<button className="forms__button" type="submit" aria-disabled="true">Disabled with Aria</button>
 ```
 
-<button className="forms__button" type="submit" aria-disabled="true">Disabled</button>
+<button className="forms__button" type="submit" aria-disabled="true">Disabled with Aria</button>
 
-## How to handle errors
+## Required field
+
+- the common red * is the most common visual indicator for a required field
+- SR will it only read as a word like "star" or "asterisk" or completely ignore it
+
+(possible) Solution: Hide the * for SR with `aria-hidden="true"`. Add the `required` attribute`to the element.
+
+<br></br>
+<label for="address" class="field-label">
+  Address <span class="field-star" aria-hidden="true">*</span>
+</label>
+<input id="address" type="text" required />
+
+## How to handle form errors
 
 ## Complete form example
 
