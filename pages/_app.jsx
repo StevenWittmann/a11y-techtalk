@@ -2,7 +2,7 @@ import '../styles.css';
 import 'nextra-theme-docs/style.css';
 import '../custom.css';
 import '../forms.scss';
-import './customForm.js';
+import '../javascript/customForm.js';
 import { SSRProvider } from '@react-aria/ssr';
 import '../components/reorderable-list.scss';
 import '../components/portal-switcher.scss';
