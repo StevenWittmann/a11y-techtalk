@@ -6,6 +6,8 @@
 
 ## Why do we need accessible forms
 
+- for screenreader users, users that use the keyboard and everybody who likes clear instructions and a quick process
+
 ## Use native HTML
 
 - whenever possible
@@ -93,6 +95,21 @@ ARIA vs. HTML
 
 - `<label>` defines label for several elements, like `<input>`, `<select>` and `<textarea>`
 - screenreaders will read out loud the label when element is focused
+- labels should be distinctive and descriptive
+
+Bad:
+<br></br>
+<label htmlFor="txtFirstName">Name</label>
+<input type="text" id="txtFirstName" />
+<br></br>
+Good:
+<br></br>
+<label htmlFor="txtFirstName">First Name</label>
+<input type="text" id="txtFirstName" />
+
+<label htmlFor="txtFirstName">Last Name</label>
+<input type="text" id="txtFirstName" />
+
 
 ```html
 <label>
@@ -105,7 +122,9 @@ ARIA vs. HTML
 <input type="text" id="txtFirstName" />
 ```
 
-### aria-labeledby
+### aria labels
+
+- use only for custom form elements
 
 
 ## `<select>`
@@ -208,7 +227,7 @@ Test: https://www.nvaccess.org/files/nvdaTracAttachments/3321/nvda_fieldset_anno
 
 ### Disabled Buttons
 
-- buttons are disabled for indicating, that input is invalid or incompplete
+- buttons are disabled for indicating, that input is invalid or incomplete
 - `disable` a button is valid standard technique but confusing for screenreaders since the button is not focusable
 - SR users will not recognise the end of the form
 

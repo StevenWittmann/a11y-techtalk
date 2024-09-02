@@ -14,6 +14,7 @@ class MyDocument extends Document {
 						rel="stylesheet"
 					/>
 					<link rel="stylesheet" href="https://unpkg.com/dracula-prism/dist/css/dracula-prism.min.css" />
+					<script type="text/javascript" src="/javascript/customForm.js" defer></script>
 				</Head>
 				<body>
 					<Main />
