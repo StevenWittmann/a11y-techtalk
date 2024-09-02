@@ -19,15 +19,22 @@
   }
 }
 
+.first-name {
+  margin-bottom: .1rem;
+}
 
 .terms-forms {
+  &__wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
   .control, fieldset {
     margin: 6px 0;
   }
 
   label {
     display: inline-block;
-    width: 120px;
     vertical-align: top;
   }
 
@@ -58,7 +65,7 @@
   }
 }
 
-#sundae-order-form, #best-company {
+#complete-forms-example, #best-company {
 
   body {
     margin: 0 1rem;

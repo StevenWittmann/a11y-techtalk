@@ -19,14 +19,14 @@ ARIA vs. HTML
 <div className="forms__comparison">
   <div className="forms__comparison--aria">
     ```html
-        <div role="form" id="sundae-order-form">
+        <div role="form" id="aria">
            <!-- form content -->
         </div>
     ```
   </div>
    <div className="forms__comparison--html">
     ```html
-        <form id="sundae-order-form">
+        <form id="html">
           <!-- form content -->
         </form>
     ```
@@ -35,16 +35,17 @@ ARIA vs. HTML
 
 ## Forms structure
 
+- form structure is important to maintain the power of native HTML forms
 - the following question for extra bacon LOOKS exactly the same as the one with the cheese
 - but navigating with the keyboard and a SR: it would only read the answers with no relation to the question
 
-<br></br>
+<br/>
 <form>
   <p>Would you like some extra bacon?</p>
 
    <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
    <label htmlFor="yesBacon">Yes, please!</label>
-   <br></br>
+   <br/>
    <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
    <label htmlFor="noBacon">No, thanks!</label>
 </form>
@@ -55,7 +56,7 @@ ARIA vs. HTML
 
    <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
    <label for="yesBacon">Yes, please!</label>
-   <br></br>
+
    <input type="radio" id="noBacon" name="bacon" value="noBacon" />
    <label for="noBacon">No, thanks!</label>
 </form>
@@ -66,13 +67,13 @@ ARIA vs. HTML
 - within the fieldset is the `<legend>` element to provide a caption
 - this structure forms a relation between question and answer
 
-<br></br>
+<br/>
 <form action="#">
   <fieldset>
   <legend>Would you like some extra cheese?</legend>
     <input type="radio" id="yesCheese" name="cheese" value="yesCheese" />
     <label htmlFor="yesCheese">Yes, please!</label>
-    <br></br>
+    <br/>
     <input type="radio" id="noCheese" name="cheese" value="noCheese" />
     <label htmlFor="noCheese">No, thanks!</label>
   </fieldset>
@@ -84,7 +85,7 @@ ARIA vs. HTML
   <legend>Would you like some extra cheese?</legend>
     <input type="radio" id="yesCheese" name="agree" />
     <label for="yesCheese">Yes, please!</label>
-    <br></br>
+
     <input type="radio" id="noCheese" name="disagree" />
     <label for="noCheese">No, thanks!</label>
   </fieldset>
@@ -100,15 +101,17 @@ ARIA vs. HTML
 - labels should be distinctive and descriptive
 
 Bad:
-<br></br>
+<br/>
 <label htmlFor="txtFirstName">Name</label>
 <input type="text" id="txtFirstName" />
-<br></br>
+<br/>
 Good:
-<br></br>
+<br/>
+
 <label htmlFor="txtFirstName">First Name</label>
 <input type="text" id="txtFirstName" />
 
+<br/><br/>
 <label htmlFor="txtFirstName">Last Name</label>
 <input type="text" id="txtFirstName" />
 
@@ -136,23 +139,26 @@ Good:
 - to make those non-interactive elements visible to SR you can use `aria-describedby`
 - this attribute is useful to provide supplemental information about an control element, e.g. a date format, max length of an input field, password requirements
 - good for users skimming through a form, so they only get the information when they actually navigate to the field
+- texts with `aria-describedby` can be hidden (hidden="hidden"), but don't have to be
 
-<br></br>
+<br/>
 <form>
 <div className="terms-forms">
-  <label for="terms-accept">I accept the following terms and conditions:</label>
-  <input aria-describedby="terms-and-conditions" id="terms-accept" type="checkbox" />
-    <ul id="terms-and-conditions">
-      <li>
-        I entered all data truthfully
-      </li>
-      <li>
-        I accept the terms and conditions
-      </li>
-      <li>
-       Of course, I would like to receive a Newsletter!
-      </li>
-    </ul>
+  <div className="terms-forms__wrapper">
+    <label for="terms-accept">I accept the following terms and conditions:</label>
+    <input aria-describedby="terms-and-conditions" id="terms-accept" type="checkbox" />
+  </div>
+  <ul id="terms-and-conditions">
+    <li>
+      I entered all data truthfully
+    </li>
+    <li>
+      I accept the terms and conditions
+    </li>
+    <li>
+     Of course, I would like to receive a Newsletter!
+    </li>
+  </ul>
   </div>
 </form>
 
@@ -166,42 +172,11 @@ Good:
 - users may be confused why a text is focused and expect some sort of interaction with it
 - this also is counterproductive, since you would've already finished interacting with the control element (the "agree" checkbox in this example) and would receive the information later than necessary
 
-## `aria-label`
+### `aria-label`
 
 - use mostly for custom form elements
 - they are well-supported for interactive elements but not well-supported for statix text elements
 - if you're reaching to aria-label often, it may be a sign to reconsider the semantic markup
-
-
-## `<select>`
-
-<form id="best-company">
-  <fieldset>
-  <legend>Company Survey</legend>
-    <label htmlFor="bestCompany">What company is the best?</label>
-    <select name="bestCompany" id="bestCompany">
-      <option value="dotSource GmbH">dotSource GmbH</option>
-      <option value="dotSource SE">dotSource SE</option>
-      <option value="dS">dS</option>
-      <option value="all of the above">all of the above</option>
-    </select>
-  </fieldset>
-</form>
-
-```html
-<form id="best-company">
-  <fieldset>
-  <legend>Company Survey</legend>
-    <label for="bestCompany">What company is the best?</label>
-    <select name="bestCompany" id="bestCompany">
-      <option value="dotSource GmbH">dotSource GmbH</option>
-      <option value="dotSource SE">dotSource SE</option>
-      <option value="dS">dS</option>
-      <option value="all of the above">all of the above</option>
-    </select>
-  </fieldset>
-</form>
-```
 
 ## `<dialog>`
 
@@ -262,6 +237,35 @@ Solution: `autocomplete="off"` or explain what the feature does with `aria-descr
 
 Solution: Display information inside the label for example "Full name (max. 20 character)"
 
+
+<form id="best-company">
+  <fieldset>
+  <legend>Company Survey</legend>
+    <label htmlFor="bestCompany">What company is the best?</label>
+    <select name="bestCompany" id="bestCompany">
+      <option value="dotSource GmbH">dotSource GmbH</option>
+      <option value="dotSource SE">dotSource SE</option>
+      <option value="dS">dS</option>
+      <option value="all of the above">all of the above</option>
+    </select>
+  </fieldset>
+</form>
+
+```html
+<form id="best-company">
+  <fieldset>
+  <legend>Company Survey</legend>
+    <label for="bestCompany">What company is the best?</label>
+    <select name="bestCompany" id="bestCompany">
+      <option value="dotSource GmbH">dotSource GmbH</option>
+      <option value="dotSource SE">dotSource SE</option>
+      <option value="dS">dS</option>
+      <option value="all of the above">all of the above</option>
+    </select>
+  </fieldset>
+</form>
+```
+
 ### Disabled Buttons
 
 - buttons are disabled for indicating, that input is invalid or incomplete
@@ -282,78 +286,145 @@ Solution: use `aria-disabled="true"` to allow the button to receive focus and an
 
 <button className="forms__button" type="submit" aria-disabled="true">Disabled with Aria</button>
 
-## Required field
+## How to handle form errors
+
+### Required field
 
 - the common red * is the most common visual indicator for a required field
 - SR will it only read as a word like "star" or "asterisk" or completely ignore it
 
-(possible) Solution: Hide the * for SR with `aria-hidden="true"`. Add the `required` attribute`to the element.
+(possible) Solution: Hide the * for SR with `aria-hidden="true"`. Add the `required` attribute to the element.
 
-<br></br>
+```html
 <label for="address" class="field-label">
   Address <span class="field-star" aria-hidden="true">*</span>
 </label>
 <input id="address" type="text" required />
+```
 
-## How to handle form errors
+-> Name field in form example
 
-## Complete form example
+- sadly this standard error message is often not wanted, because its not styleable
+- therefore a custom error message with `aria-required="true"` is needed
+- this adds semantics (SR says it is required) but it does not:
+  - prevent invalid submit
+  - show custom error message
+  - auto-focus invalid field
 
-<form id="sundae-order-form">
-  <h2>Online Sundae Order Form</h2>
+
+### Colored error messages
+
+- its tempting to only use a red color to signal errors
+- people with color blindness or different perceptions of color won't regonise this as an error
+
+Solution: complement the color with an icon, shadow and a message whats missing
+
+### The Message
+
+- the error message needs to be short and precise and tells the user how to fix it
+- to mark the field as invalid use `aria-invalid="true"` to make the SR announce its invalid
+- then use `aria-describedby` to point to the error element
+- in the following example you can see how aria-describedby accepts multiple IDs which allows for multiple announcements in the given order
+
+Example: https://codepen.io/sandrina-p/pen/oNMEBXg
+
+- its also good practice to display all errors above the form with focus on them so that the SR announces them
+- those messages have clear instructions that are programmatically connected to the input field
+
+- there already exists a `aria-errormessage` attribute but its not yet supported by most SR, so for now `aria-describedby` is the best choice
+
+**Attention:** If the information in the aria-describedby changes e.g. updates a status, rather use `aria-live`, because aria-describedby is static
+
+### CAPTCHA
+
+- if a form uses CAPTCHA it is not accessible; to make it accessible it needs to be removed
+- there are other ways to make a form secure:
+  - have a hidden field to catch robots; if the field is completed/filled out the form won't submit
+  - require users to confirm their email address when signing up for a newsletter
+
+## Form example
+
+<form id="complete-forms-example">
+  <h2>How to order pizza online (fast)</h2>
   <fieldset>
     <legend>Customer Info</legend>
-    <p><label>Name: <input type="name" required aria-required="true"/></label></p>
-    <p><label>Telephone: <input type="tel"/></label></p>
-    <p><label>Email address: <input type="email"/></label></p>
+    <label>Name: <input type="name" required aria-required="true"/></label><br/>
+    <label>Telephone: <input type="tel" aria-required="true"/></label><br/>
+    <label>Email address: <input type="email"/></label><br/>
   </fieldset>
 
   <fieldset>
     <legend>Size</legend>
-    <p><label><input type="radio" name="size" value="small"/>Small</label></p>
-    <p><label><input type="radio" name="size" value="medium"/>Medium</label></p>
-    <p><label><input type="radio" name="size" value="large"/>Large</label></p>
+    <label><input type="radio" name="size" value="20cm"/>20cm</label><br/>
+    <label><input type="radio" name="size" value="24cm"/>24cm</label><br/>
+    <label><input type="radio" name="size" value="28cm"/>28cm</label><br/>
   </fieldset>
 
   <fieldset>
     <legend>Toppings</legend>
-    <p><label><input type="checkbox" name="topping" value="whipped-cream"/>Whipped cream</label></p>
-    <p><label><input type="checkbox" name="topping" value="cherry"/>Cherry</label></p>
-    <p><label><input type="checkbox" name="topping" value="nuts"/>Nuts</label></p>
-    <p><label><input type="checkbox" name="topping" value="caramel-sauce"/>Caramel sauce</label></p>
-    <p><label><input type="checkbox" name="topping" value="chocolate-sauce"/>Chocolate sauce</label></p>
+    <label><input type="checkbox" name="topping" value="mushrooms"/>Mushrooms</label><br/>
+    <label><input type="checkbox" name="topping" value="bacon"/>Bacon</label><br/>
+    <label><input type="checkbox" name="topping" value="onions"/>Onions</label><br/>
+    <label><input type="checkbox" name="topping" value="ham"/>Ham</label><br/>
+    <label><input type="checkbox" name="topping" value="tuna"/>Tuna</label><br/>
+    <label><input type="checkbox" name="topping" value="veggies"/>Veggies</label><br/>
+
   </fieldset>
-  <p><label>Delivery instructions: </label><br></br><textarea name="comments"></textarea></p>
-  <p><button>Submit order</button></p>
+  <fieldset>
+  <legend>Would you like some extra cheese?</legend>
+    <input type="radio" id="yesCheese" name="cheese" value="yesCheese" />
+    <label htmlFor="yesCheese">Yes, please!</label>
+    <br/>
+    <input type="radio" id="noCheese" name="cheese" value="noCheese" />
+    <label htmlFor="noCheese">No, thanks!</label>
+  </fieldset>
+  <label>Special requests: </label><br/>
+  <br/>
+  <textarea aria-describedby="delivery-information" name="comments"></textarea>
+  <p id="delivery-information" hidden="hidden">Extra toppings</p>
+  <button className="forms__button">Submit order</button>
 </form>
 
 ```html
-<form id="sundae-order-form">
-  <h2>Online Sundae Order Form</h2>
+<form id="complete-forms-example">
+  <h2>How to order pizza online (fast)</h2>
   <fieldset>
     <legend>Customer Info</legend>
-    <p><label>Name: <input type="name" required aria-required="true" /></label></p>
-    <p><label>Telephone: <input type="tel"/></label></p>
-    <p><label>Email address: <input type="email"/></label></p>
+    <label>Name: <input type="name" required aria-required="true"/></label>
+    <label>Telephone: <input type="tel" aria-required="true"/></label>
+    <label>Email address: <input type="email"/></label>
   </fieldset>
 
   <fieldset>
     <legend>Size</legend>
-    <p><label><input type="radio" name="size" value="small"/>Small</label></p>
-    <p><label><input type="radio" name="size" value="medium"/>Medium</label></p>
-    <p><label><input type="radio" name="size" value="large"/>Large</label></p>
+    <label><input type="radio" name="size" value="20cm"/>20cm</label>
+    <label><input type="radio" name="size" value="24cm"/>24cm</label>
+    <label><input type="radio" name="size" value="28cm"/>28cm</label>
   </fieldset>
 
   <fieldset>
     <legend>Toppings</legend>
-    <p><label><input type="checkbox" name="topping" value="whipped-cream"/>Whipped cream</label></p>
-    <p><label><input type="checkbox" name="topping" value="cherry"/>Cherry</label></p>
-    <p><label><input type="checkbox" name="topping" value="nuts"/>Nuts</label></p>
-    <p><label><input type="checkbox" name="topping" value="caramel-sauce"/>Caramel sauce</label></p>
-    <p><label><input type="checkbox" name="topping" value="chocolate-sauce"/>Chocolate sauce</label></p>
+    <label><input type="checkbox" name="topping" value="mushrooms"/>Mushrooms</label>
+    <label><input type="checkbox" name="topping" value="bacon"/>Bacon</label>
+    <label><input type="checkbox" name="topping" value="onions"/>Onions</label>
+    <label><input type="checkbox" name="topping" value="ham"/>Ham</label>
+    <label><input type="checkbox" name="topping" value="tuna"/>Tuna</label>
+    <label><input type="checkbox" name="topping" value="veggies"/>Veggies</label>
+
   </fieldset>
-  <p><label>Delivery instructions: </label><br><textarea name="comments"></textarea></p>
-  <p><button>Submit order</button></p>
+  <fieldset>
+  <legend>Would you like some extra cheese?</legend>
+    <input type="radio" id="yesCheese" name="cheese" value="yesCheese" />
+    <label for="yesCheese">Yes, please!</label>
+
+    <input type="radio" id="noCheese" name="cheese" value="noCheese" />
+    <label for="noCheese">No, thanks!</label>
+  </fieldset>
+  <label>Special requests: </label>
+
+  <textarea aria-describedby="delivery-information" name="comments"></textarea>
+  <p id="delivery-information" hidden="hidden">Extra toppings</p>
+  <button class="forms__button">Submit order</button>
 </form>
 ```
 
