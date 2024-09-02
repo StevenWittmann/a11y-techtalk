@@ -40,10 +40,10 @@ ARIA vs. HTML
   <p>Would you like some extra bacon?</p>
 
    <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
-   <label for="yesBacon">Yes, please!</label>
+   <label htmlFor="yesBacon">Yes, please!</label>
    <br></br>
    <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
-   <label for="noBacon">No, thanks!</label>
+   <label htmlFor="noBacon">No, thanks!</label>
 </form>
 
 ```html
@@ -51,10 +51,10 @@ ARIA vs. HTML
   <p>Would you like some extra bacon?</p>
 
    <input type="radio" id="yesBacon" name="bacon" value="yesBacon" />
-   <label for="yesBacon">Yes, please!</label>
+   <label htmlFor="yesBacon">Yes, please!</label>
    <br></br>
    <input type="radio" id="noBacon" name="bacon" value="noBacon"/>
-   <label for="noBacon">No, thanks!</label>
+   <label htmlFor="noBacon">No, thanks!</label>
 </form>
 ```
 
@@ -67,10 +67,10 @@ ARIA vs. HTML
   <fieldset>
   <legend>Would you like some extra cheese?</legend>
     <input type="radio" id="yesCheese" name="cheese" value="yesCheese" />
-    <label for="yesCheese">Yes, please!</label>
+    <label htmlFor="yesCheese">Yes, please!</label>
     <br></br>
     <input type="radio" id="noCheese" name="cheese" value="noCheese" />
-    <label for="noCheese">No, thanks!</label>
+    <label htmlFor="noCheese">No, thanks!</label>
   </fieldset>
 </form>
 
@@ -79,10 +79,10 @@ ARIA vs. HTML
   <fieldset>
   <legend>Would you like some extra cheese?</legend>
     <input type="radio" id="yesCheese" name="agree" />
-    <label for="yesCheese">Yes, please!</label>
+    <label htmlFor="yesCheese">Yes, please!</label>
     <br></br>
     <input type="radio" id="noCheese" name="disagree" />
-    <label for="noCheese">No, thanks!</label>
+    <label htmlFor="noCheese">No, thanks!</label>
   </fieldset>
 </form>
 ```
@@ -101,7 +101,7 @@ ARIA vs. HTML
 </label>
 ```
 ```html
-<label for="txtFirstName">First Name</label>
+<label htmlFor="txtFirstName">First Name</label>
 <input type="text" id="txtFirstName" />
 ```
 
@@ -144,17 +144,17 @@ ARIA vs. HTML
 - if no other element (like an input field) is implemented, `autofocus` should be on the close button or dialog itself
 
 <dialog>
-  <button class="forms__button" autoFocus>Close</button>
+  <button className="forms__button" autoFocus>Close</button>
   <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
-<button class="forms__button">Show the dialog</button>
+<button className="forms__button">Show the dialog</button>
 
 ```html
 <dialog>
-  <button class="forms__button" autoFocus>Close</button>
+  <button className="forms__button" autoFocus>Close</button>
   <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
-<button class="forms__button">Show the dialog</button>
+<button className="forms__button">Show the dialog</button>
 ```
 
 **Attention!** Do not add tabindex property to `<dialog>` since the dialog and corresponding close button can already receive focus and be interactive
@@ -215,10 +215,10 @@ Test: https://www.nvaccess.org/files/nvdaTracAttachments/3321/nvda_fieldset_anno
 Solution: use `aria-disabled="true"` to allow the button to receive focus and announcing its disabled state
 
 ```html
-<button class="forms__button" type="submit" aria-disabled="true">Disabled</button>
+<button className="forms__button" type="submit" aria-disabled="true">Disabled</button>
 ```
 
-<button class="forms__button" type="submit" aria-disabled="true">Disabled</button>
+<button className="forms__button" type="submit" aria-disabled="true">Disabled</button>
 
 ## How to handle errors
 
